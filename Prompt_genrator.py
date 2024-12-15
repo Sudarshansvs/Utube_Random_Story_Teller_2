@@ -15,7 +15,7 @@ t = random.choice(Story_json["themes"])
 a = random.choice(Story_json["atmospheres"])
 n1 = random.choice(Story_json["characters"][s1])
 n2 = random.choice(Story_json["characters"][s2])
-prompt_gven = f"write a thriller story in the genres of {g},with theme {t},atmosphere {a}, include the charecters in {s1, s2} with names {n1} and {n2} in 80 lines with proper ending. and divide the story to 3 parts each with equal length and suspense at the end of each part"
+prompt_gven = f"write a thriller story in the genres of {g},with theme {t},atmosphere {a}, include the charecters in {s1, s2} with names {n1} and {n2} in 40 words with proper ending. and divide the story to 3 parts each with equal length and suspense at the end of each part, include tittle for each part"
 output_prompt = "op_file.txt"
 with open ("op_file.txt" , "w")as op:
     op.write(prompt_gven)

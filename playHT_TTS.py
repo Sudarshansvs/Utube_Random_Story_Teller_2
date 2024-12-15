@@ -1,45 +1,40 @@
-# from pyht import Client, Format
-# from dotenv import load_dotenv
+from pyht import Client
+from dotenv import load_dotenv
 from pyht.client import TTSOptions
+import os
+import datetime
 import json
-import asyncio
-# # from playsound import playsound
-# load_dotenv()
-# op = open("audio_output.mp3", "wb+")
-# client = Client(
-#     user_id="IMbkwOvQK5fbYzJjGGyCNyfXjWr1",
-#     api_key="ed26a325e15745a78dfb87cb65e9548b",
-# )
-#
-# options = TTSOptions(voice="s3://voice-cloning-zero-shot/d9ff78ba-d016-47f6-b0ef-dd630f59414e/male-cs/manifest.json",
-#                      format=Format.FORMAT_MP3,
-#                      sample_rate= 16000, speed=0.8)
-# script_story_file = open("output_story.json", "r")
-# obj = [json.loads(i) for i in script_story_file]
-# stories = obj[-1]["story"][0].strip()
-# stories_list_words = stories.split(" ")
-# for chunk in client.stream_tts_input(stories_list_words, options):
-#     op.write(chunk)
-# #playsound('audio_output.mp3')
-#
+load_dotenv()
+timestamp = datetime.datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
 
-from pyht import AsyncClient
-op = open("audio_output.mp3", "wb+")
-client = AsyncClient(
-    user_id="IMbkwOvQK5fbYzJjGGyCNyfXjWr1",
-    api_key="",
+client = Client(
+    user_id=os.getenv("PLAY_HT_USER_ID"),
+    api_key=os.getenv("PLAY_HT_API_KEY"),
 )
-script_story_file = open("output_story.json", "r")
-obj = [json.loads(i) for i in script_story_file]
-stories = obj[-1]["story"][0].strip()
-stories_list_words = stories.split(" ")
-
+Story_to_read = open("output_story.json", "r")
+story_listobj = [json.loads(i) for i in Story_to_read]
+print(story_listobj[-1])
+tittle_story = story_listobj[-1]
+x = tittle_story["story_title"]
+x= str.replace(x, " ", "_")
+print("tittle_story : ", tittle_story)
 options = TTSOptions(voice="s3://voice-cloning-zero-shot/775ae416-49bb-4fb6-bd45-740f205d20a1/jennifersaad/manifest.json")
-async def process_tts(client, options, op):
-    async for chunk in client.tts("Hi, I'm Jennifer from Play. How can I help you today?", options):
-        # do something with the audio chunk
-        #print(type(chunk))
-        op.write(chunk)
+#Open a file to save the audio
+Audio_file_name = f"{x}_{timestamp}.wav"
+story = tittle_story["story"]
+print("story : ", story)
+filtered_tsory = []
+for part in story:
+    if ":" in part:
+        filtered_tsory.append(part.split(":"))
+# story_list = story.split(":")
 
-asyncio.run(process_tts(client, options, op))
-print("written to : ", op)
+print("filtered_tsory :", filtered_tsory)
+speak = filtered_tsory[0][0]
+print(Audio_file_name, ": Audio_file_name")
+with open("audio/{}".format(Audio_file_name), "wb") as audio_file:
+    for chunk in client.tts(speak, options, voice_engine = 'PlayDialog-http'):
+        # Write the audio chunk to the file
+        audio_file.write(chunk)
+
+print("audio/{}".format(Audio_file_name))
