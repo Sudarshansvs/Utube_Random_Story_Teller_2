@@ -1,0 +1,8 @@
+pyht
+load_dotenv
+json
+fastapi
+uvicorn
+google.generativeai
+requests
+openai
