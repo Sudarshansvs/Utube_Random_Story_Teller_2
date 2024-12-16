@@ -1,8 +1,20 @@
-.env
-Utube
-audio
+
+
+
+# Ignore build artifacts
+audio/
+Utube/
+__pycache__/
+
+# Ignore log files
+*.env
+
+# Ignore IDE specific files
+*.idea
+.vscode/
+
+# Ignore sensitive files
 output_story.json
 op_file.txt
 output_jenn.wav
 tts_1.wav
-__pycache__
