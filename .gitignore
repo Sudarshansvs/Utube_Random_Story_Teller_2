@@ -1,1 +1,8 @@
 .env
+Utube
+audio
+output_story.json
+op_file.txt
+output_jenn.wav
+tts_1.wav
+__pycache__
