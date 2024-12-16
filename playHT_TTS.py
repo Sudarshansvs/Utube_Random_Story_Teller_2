@@ -36,5 +36,3 @@ def audio_wav_generator():
         for chunk in client.tts(speak, options, voice_engine):
             audio_file.write(chunk)
     return "Audio written to the file : audio/{}".format(Audio_file_name)
-
-# pas_story()
