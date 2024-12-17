@@ -3,6 +3,7 @@
 
 # Ignore build artifacts
 audio/
+images/
 Utube/
 __pycache__/
 
@@ -18,3 +19,4 @@ output_story.json
 op_file.txt
 output_jenn.wav
 tts_1.wav
+output_image.jpg

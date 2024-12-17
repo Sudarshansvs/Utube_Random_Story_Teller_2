@@ -1,4 +1,5 @@
 import google.generativeai as genai
+from huggingface_hub import InferenceClient
 from pyht.client import TTSOptions
 from pyht import Client
 import datetime
@@ -9,12 +10,11 @@ from dotenv import load_dotenv
 load_dotenv()
 
 
-Api_key = os.environ.get('GEMINI_API_KEY')
 
 def gemini_auth():
     op = open("op_file.txt", "r")
     x = op.read()
-    genai.configure(api_key=Api_key)
+    genai.configure(api_key=os.environ.get('GEMINI_API_KEY'))
     model = genai.GenerativeModel("gemini-1.5-flash")
     response = model.generate_content(str(x))
     response_list_n = re.split(r"\*\*Part \d+: (.*?)\*\*",response.text )
@@ -30,3 +30,8 @@ def pyht_auth():
     options = TTSOptions(voice="s3://voice-cloning-zero-shot/775ae416-49bb-4fb6-bd45-740f205d20a1/jennifersaad/manifest.json")
     voice_engine = 'PlayDialog-http'
     return client, options, voice_engine
+
+
+def image_gen():
+    client = InferenceClient("black-forest-labs/FLUX.1-dev", token=os.getenv("H_API"))
+    return client
