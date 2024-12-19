@@ -13,7 +13,7 @@ install the requirements:
 - pip install json
 - pip install requests
 - pip install openai
-
+- pip install huggingface_hub 
 
   in .env file add teh api _keys from all the AI apis
 
@@ -22,5 +22,4 @@ install the requirements:
   run the command to start the server
   ### uvicorn main:app --reload
 
-  
   

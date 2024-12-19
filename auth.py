@@ -12,13 +12,20 @@ load_dotenv()
 
 
 def gemini_auth():
-    op = open("op_file.txt", "r")
-    x = op.read()
     genai.configure(api_key=os.environ.get('GEMINI_API_KEY'))
     model = genai.GenerativeModel("gemini-1.5-flash")
+    op = open("op_file.txt", "r")
+    x= op.read()
     response = model.generate_content(str(x))
     response_list_n = re.split(r"\*\*Part \d+: (.*?)\*\*",response.text )
     return response_list_n
+
+def Image_Prompt(SP):
+    genai.configure(api_key=os.environ.get('GEMINI_API_KEY'))
+    model = genai.GenerativeModel("gemini-1.5-flash")
+    response = model.generate_content(str(SP))
+    return response.text
+
 
 
 

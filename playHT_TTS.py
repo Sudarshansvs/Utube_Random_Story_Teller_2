@@ -15,7 +15,6 @@ playHT_AI_voice = APIRouter(
 
 def pas_story(count):
     Story_to_read = open("output_story.json", "r")
-    timestamp = datetime.datetime.now().strftime("%Y-%m-%d")
     story_listobj = [json.loads(i) for i in Story_to_read]
     tittle_story = story_listobj[-1]
     Audio_file_name = f"{str.replace(tittle_story["story_title"], " ", "_")}_{count}.wav"
@@ -41,6 +40,9 @@ def audio_wav_generator():
             for chunk in client.tts(speak, options, voice_engine):
                 audio_file.write(chunk)
         count+=1
-    return "Audio written to the file : audio/{}/{}".format(timestamp,Audio_file_name)
+    db = open("Data_base.csv","a+")
+    db.write("\n")
+    db.writelines(f"playHT_AI_voice,{timestamp},{"audio/{}".format(timestamp)}")
+    return "Audio written to the file : audio/{}".format(timestamp)
 
 # pas_story()
