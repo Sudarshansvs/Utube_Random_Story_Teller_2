@@ -24,8 +24,8 @@ def pas_story(count):
         if ":" in part:
             filtered_tsory.append(part.split(":"))
     speak = "".join(filtered_tsory[count][1:])
-    print("filtered_tsory : ", filtered_tsory)
-    print("filtered_tsory[0][1:] : ", speak)
+    # print("filtered_tsory : ", filtered_tsory)
+    # print("filtered_tsory[0][1:] : ", speak)
     return speak, Audio_file_name
 
 @playHT_AI_voice.get('/audio_wav_generator')
