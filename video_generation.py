@@ -222,23 +222,25 @@ def adding_zoom_in_action(videoclip, output_file):
     gradual_zoomed_video.write_videofile(f"video/{output_file}_zoom_tryout.mp4", codec="libx264", fps=24)
     return f"video/{output_file}_zoom_tryout.mp4"
 
-def clear_cache(op):
+def clear_cache(op,zoom):
     os.remove("output_video_clip.mp4")
     os.remove("tmp/combined_audio.wav")
+    db = open("Data_base.csv","a+")
+    db.write("\n")
+    db.writelines(f"video_generated,{op},{f"video/{op}: zoomed video if any {zoom}"}")
 
-    
 
-@video_gen.post("/Post_video_gen/v1")
-async def Post_video_gen(data :dict = Body(...)):
+@video_gen.post("/Post_video_gen")
+def Post_video_gen(data :dict = Body(...)):
     Audio, final_audio_length  = get_audio(data["audio"],0)
     print("final_audio_length  : ", final_audio_length) 
     pics,width, height = get_pics(data["pics"], final_audio_length)
     final_croped_video = make_cropped_video(Audio, pics, data["op_file"],width, height)
-    zoom = adding_zoom_in_action(final_croped_video, data["op_file"]) if data["zoom"] else None
-    clear_cache(data["op_file"])
+    zoom = adding_zoom_in_action(final_croped_video, data["op_file"]) if data["zoom"]=="True" else None
+    clear_cache(data["op_file"],zoom)
     return final_croped_video, zoom
 
 
 
-# b = {"audio":"audio/2024-12-26", "pics":"images/2024-12-26", "op_file": "A_12_26_I_12_26", "zoom":False}
+# b = {"audio":"audio/2024-12-28", "pics":"images/2024-12-28", "op_file": "A_12_28_I_12_28", "zoom":"False"}
 # Post_video_gen(b)
