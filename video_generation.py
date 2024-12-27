@@ -227,7 +227,7 @@ def clear_cache(op,zoom):
     os.remove("tmp/combined_audio.wav")
     db = open("Data_base.csv","a+")
     db.write("\n")
-    db.writelines(f"video_generated,{op},{f"video/{op}: zoomed video if any {zoom}"}")
+    db.writelines(f"video_generated,{op},{"video/{op}: zoomed video if any {zoom}"}")
 
 
 @video_gen.post("/Post_video_gen")
