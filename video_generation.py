@@ -222,12 +222,38 @@ def adding_zoom_in_action(videoclip, output_file):
     gradual_zoomed_video.write_videofile(f"video/{output_file}_zoom_tryout.mp4", codec="libx264", fps=24)
     return f"video/{output_file}_zoom_tryout.mp4"
 
+def overlay_background(background_video_path, main_video_clip, output_video_path):
+    background = VideoFileClip(background_video_path).subclipped(0, 3)
+    output_video_path_for_crop = "output_video_clip.mp4"
+    background.write_videofile(output_video_path_for_crop, codec="libx264", fps=24)
+    main_vdieo = VideoFileClip(main_video_clip)
+    print(main_vdieo.duration)
+    background = VideoFileClip(output_video_path_for_crop)
+    background_duarion = background.duration
+    x = int(main_vdieo.duration/background_duarion)
+    list = []
+    for i in range(x):
+        list.append(background)
+    print("list: , ", list, len(list))
+    y = concatenate_videoclips(list)
+    y.write_videofile(f"tmp/{output_video_path}.mp4", codec="libx264")
+    bg_video = VideoFileClip(f"tmp/{output_video_path}.mp4")
+    main_vdieo = main_vdieo.resized(bg_video.size)
+    #main_vdieo = main_vdieo.with_position(("center", "center"))
+    #final_video = bg_video.overlay(main_vdieo)
+
+
+    # background = background.with_position(("center", "center"))
+    # final_video = background.with_duration(background.duration)
+    main_vdieo.write_videofile(f"video/{output_video_path}_overlay.mp4", codec="libx264", fps=24)
+    return output_video_path
+
 def clear_cache(op,zoom):
     os.remove("output_video_clip.mp4")
     os.remove("tmp/combined_audio.wav")
     db = open("Data_base.csv","a+")
     db.write("\n")
-    db.writelines(f"video_generated,{op},{"video/{op}: zoomed video if any {zoom}"}")
+    db.writelines(f"video_generated,{op["audio"], op["pics"]},video/{op["op_file"]}: zoomed video if any {zoom}")
 
 
 @video_gen.post("/Post_video_gen")
@@ -237,10 +263,14 @@ def Post_video_gen(data :dict = Body(...)):
     pics,width, height = get_pics(data["pics"], final_audio_length)
     final_croped_video = make_cropped_video(Audio, pics, data["op_file"],width, height)
     zoom = adding_zoom_in_action(final_croped_video, data["op_file"]) if data["zoom"]=="True" else None
-    clear_cache(data["op_file"],zoom)
+    #clip = "Smoke_43___4K_res.mp4.crdownload"
+    #overlay_background(clip,final_croped_video,data["op_file"] )
+    clear_cache(data,zoom)
     return final_croped_video, zoom
 
 
 
 # b = {"audio":"audio/2024-12-28", "pics":"images/2024-12-28", "op_file": "A_12_28_I_12_28", "zoom":"False"}
 # Post_video_gen(b)
+
+#overlay_background("Smoke_43___4K_res.mp4.crdownload", "video/A_12_28_I_12_28.mp4","A_12_28_I_12_28")

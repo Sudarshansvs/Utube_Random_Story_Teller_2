@@ -12,3 +12,7 @@ image_generater,2024-12-26,images/2024-12-26
 gemini_story_genAnd_format,2024-12-28,output_story.json
 playHT_AI_voice,2024-12-28,audio/2024-12-28
 image_generater,2024-12-28,images/2024-12-28
+video_generated,A_12_28_I_12_28,video/{op}: zoomed video if any {zoom}
+video_generated,A_12_28_I_12_28,video/{op}: zoomed video if any {zoom}
+video_generated,A_12_28_I_12_28,video/A_12_28_I_12_28: zoomed video if any None
+video_generated,('audio/2024-12-28', 'images/2024-12-28'),video/A_12_28_I_12_28: zoomed video if any None
